@@ -1,5 +1,6 @@
 let counter = true
 const boxes = document.querySelectorAll('.box')
+let marks = 0
 
 const winStrategies = {
     one: [0, 1, 2, 3, 4],
@@ -37,16 +38,29 @@ const checkWin = moves => {
     for (const [key, strategies] of Object.entries(winStrategies)) {
         let win = strategies.filter(strategy => moves[strategy] === 1)
         if (win.length === 5) {
-            return gameEnd()
+            return gameEnd('win')
         }
     }
     counter = !counter
- }
+    ++marks
+    if (marks > 24) {
+        gameEnd('tie')
+    }
+}
 
-const gameEnd = () => {
-    document.querySelector('.main').style.display = 'none'
-    document.querySelector('.congrats-div').style.display = 'block'
-    document.querySelector('.win-text').textContent = `CONGRATS PLAYER ${counter ? '1' : '2'}!`
+const gameEnd = type => {
+    if (type === 'tie') {
+        document.querySelector('.main').style.display = 'none'
+        document.querySelector('.congrats-div').style.display = 'block'
+        document.querySelector('.win-image').style.display = 'none'
+        document.querySelector('.win-text').textContent = `GAME TIE!`
+
+    }
+    else {
+        document.querySelector('.main').style.display = 'none'
+        document.querySelector('.congrats-div').style.display = 'block'
+        document.querySelector('.win-text').textContent = `CONGRATS PLAYER ${counter ? '1' : '2'}!`
+    }
 }
 
 
